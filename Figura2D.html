@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        Daniel Hernando Gil Cusi - 6000428
+		<title> Figura ThreeJS 2D</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+    
+	<body>
+		<script src="js/three.min.js"></script>
+        
+		<script>
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera( 105, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            const renderer = new THREE.WebGLRenderer();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+            
+            //VECTORES
+            var origen = new THREE.Vector3( 0, 0, 0 );
+            var vectorX = new THREE.Vector3( 1, 0, 0 );
+            var vectorY = new THREE.Vector3( 0, 1, 0 );
+        	var vectorZ = new THREE.Vector3( 0, 0, 1 );
+    
+            //COLORES
+            var color1 = new THREE.Color( 0xFFFFFF );
+            var colorR = new THREE.Color( 0xAA3333 );
+            var colorG = new THREE.Color( 0x33AA33 );
+            var colorB = new THREE.Color( 0x333366 );
+            
+            //Se crea la grilla XY
+            var gridHelperXY = new THREE.GridHelper( 10, 10, color1, color1);
+	       
+                gridHelperXY.rotateOnWorldAxis( vectorX, THREE.Math.degToRad(90) );
+            
+            //Se crean los ejes XY
+            var ejeX = new THREE.ArrowHelper( vectorX, origen, 5, colorR );	
+	        var ejeY = new THREE.ArrowHelper( vectorY, origen, 5, colorG );
+            
+            //Se crea la figura
+            var planoDimensiones = new THREE.PlaneGeometry( 1,1 );
+            
+		    var planoMaterial = new THREE.MeshBasicMaterial( { color: 0xF98EFF, side: THREE.DoubleSide } );
+            
+                //Todas las figuras con el mismo material
+            	var plano1 = new THREE.Mesh( planoDimensiones, planoMaterial );
+                var plano2 = new THREE.Mesh( planoDimensiones, planoMaterial );
+                var plano3 = new THREE.Mesh( planoDimensiones, planoMaterial );
+            
+            
+            //Se ubican las figuras
+            	plano2.position.x = 3;
+		        plano2.position.y = 2.5;
+            
+                plano3.position.x = -4;
+		        plano3.position.y = -3;
+            
+            //AQUÍ SE AGREGAN ELEMENTOS A LA ESCENA
+            scene.add(gridHelperXY,ejeX, ejeY, planoDimensiones, plano1, plano2, plano3);
+            
+            //Encuadre de escena
+			camera.position.z = 5;
+            camera.lookAt( origen );
+            
+            //RENDERIZADO FINAL
+            renderer.render( scene, camera );
+
+        </script>
+	</body>
+</html>

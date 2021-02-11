@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        Daniel Hernando Gil Cusi - 6000428
+		<title> Figura ThreeJS 3D</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+    
+	<body>
+		<script src="js/three.min.js"></script>
+        
+		<script>
+            
+            var startTime = Date.now();
+		
+		init();
+		animate();
+	
+		function init(){
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            var renderer = new THREE.WebGLRenderer();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                document.body.appendChild( renderer.domElement );
+            
+            //VECTORES
+            var origen = new THREE.Vector3( 0, 0, 0 );
+            var vectorX = new THREE.Vector3( 1, 0, 0 );
+            var vectorY = new THREE.Vector3( 0, 1, 0 );
+        	var vectorZ = new THREE.Vector3( 0, 0, 1 );
+            
+            //COLORES
+            var color1 = new THREE.Color( 0xFFFFFF );
+            var color2 = new THREE.Color( 0x333333 );
+            var colorR = new THREE.Color( 0xAA3333 );
+            var colorG = new THREE.Color( 0x33AA33 );
+            var colorB = new THREE.Color( 0x333366 );
+            
+            //Se crea la grilla 3D
+            var axesHelper = new THREE.AxesHelper( 10 );
+		  	var gridHelperXY = new THREE.GridHelper( 10, 10, color1, color1);
+		  	var gridHelperXZ = new THREE.GridHelper( 10, 10, color2, color2 );
+		  	var gridHelperYZ = new THREE.GridHelper( 10, 10, color2, color2 );
+            
+            gridHelperXY.rotateOnWorldAxis (vectorX, THREE.Math.degToRad(90) );
+		 	gridHelperXZ.rotateOnWorldAxis (vectorY, THREE.Math.degToRad(90) );
+		  	gridHelperYZ.rotateOnWorldAxis (vectorZ, THREE.Math.degToRad(90) );
+            
+            //Se crean los ejes X,Y,Z
+            var ejeX = new THREE.ArrowHelper( vectorX, origen, 5, colorR );
+		 	var ejeY = new THREE.ArrowHelper( vectorY, origen, 5, colorG );
+		 	var ejeZ = new THREE.ArrowHelper( vectorZ, origen, 5, colorB );
+            
+            //AQUÍ SE AGREGAN LOS ELEMENTOS
+            scene.add(gridHelperXY, gridHelperXZ, ejeX, ejeY, ejeZ);
+            
+            //Encuadre de escena
+			camera.position.z = 5;
+            camera.lookAt( origen );
+        }
+            
+            
+        function animate(){
+			render();
+			requestAnimationFrame( animate );
+		}
+		
+		function render(){
+			var dtime = Date.now()-startTime;    
+			camera.position.x = 2*Math.pow(Math.sin(dtime/10000),2);
+			camera.position.y = 2*Math.pow(Math.sin(dtime/10000),2);
+			camera.lookAt( 0, 0, 0 );
+			renderer.render( scene, camera );
+		}
+            
+        
+            </script>
+	</body>
+</html>
